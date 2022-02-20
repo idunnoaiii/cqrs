@@ -15,6 +15,11 @@ public class Response<T>
         Suceeded = false;
     }
 
+    public Response()
+    {
+        
+    }
+
     public bool Suceeded { get; set; }
     public List<string> Errors { get; set; }
     public string Message { get; set; }
