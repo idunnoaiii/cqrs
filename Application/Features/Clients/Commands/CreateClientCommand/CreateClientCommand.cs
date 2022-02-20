@@ -1,5 +1,6 @@
 using Application.Interfaces;
 using Application.Wrappers;
+using AutoMapper;
 using Domain.Entities;
 using MediatR;
 
@@ -17,10 +18,19 @@ public class CreateClientCommand : IRequest<Response<int>>
 
 public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, Response<int>>
 {
-    private readonly IRepositoryAsync<Client> _clientRepository;
 
+    private readonly IRepositoryAsync<Client> _clientRepository;
+    private readonly IMapper _mapper;
+    public CreateClientCommandHandler(IRepositoryAsync<Client> clientRepository, IMapper mapper)
+    {
+        _clientRepository = clientRepository;
+        _mapper = mapper;
+    }
+    
     public async Task<Response<int>> Handle(CreateClientCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var clientRegister = _mapper.Map<Client>(request);
+        var data = _clientRepository.AddAsync(clientRegister);
+        return new Response<int>(data.Id);
     }
 }
